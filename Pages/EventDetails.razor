@@ -1,0 +1,53 @@
+@page "/event/{id:int}"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Event Details</PageTitle>
+
+<h1>Event Details</h1>
+
+@if (eventDetails != null)
+{
+    <EventCard Name="@eventDetails.Name" Date="@eventDetails.Date" Location="@eventDetails.Location" />
+    
+    <div class="mt-3">
+        <p class="card-text">
+            <strong>Description:</strong> This is a detailed description of the event.
+        </p>
+    </div>
+}
+else
+{
+    <p>Event not found.</p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private EventModel? eventDetails;
+
+    private List<EventModel> events = new()
+    {
+        new() { Id = 1, Name = "Tech Conference", Date = new DateTime(2026, 5, 15, 10, 0, 0), Location = "Convention Center" },
+        new() { Id = 2, Name = "Music Festival", Date = new DateTime(2026, 6, 20, 18, 0, 0), Location = "Central Park" },
+        new() { Id = 3, Name = "Art Exhibition", Date = new DateTime(2026, 7, 10, 14, 0, 0), Location = "Art Gallery" }
+    };
+
+    protected override void OnParametersSet()
+    {
+        eventDetails = events.FirstOrDefault(e => e.Id == Id);
+
+        if (eventDetails == null)
+        {
+            NavigationManager.NavigateTo("/not-found", true);
+        }
+    }
+
+    public class EventModel
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public DateTime Date { get; set; }
+        public string? Location { get; set; }
+    }
+}

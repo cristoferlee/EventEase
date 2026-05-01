@@ -1,0 +1,17 @@
+﻿@using Fluxor
+@using eventease.Pages
+@using eventease.Layout
+
+<Fluxor.Blazor.Web.StoreInitializer />
+
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(AppLayout)"/>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(AppLayout)">
+            <NotFound />
+        </LayoutView>
+    </NotFound>
+</Router>

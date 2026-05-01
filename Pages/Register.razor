@@ -1,0 +1,61 @@
+@using System.ComponentModel.DataAnnotations
+@using eventease.Services
+@using eventease.Models
+
+@page "/register"
+
+<PageTitle>Register</PageTitle>
+
+<h1>Register for Events</h1>
+
+<p class="subtitle">Create an account to track your event attendance.</p>
+
+<EditForm Model="@registrationModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="registrationModel.Name" placeholder="Enter your name" />
+        <ValidationMessage For="@(() => registrationModel.Name)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="registrationModel.Email" placeholder="Enter your email" />
+        <ValidationMessage For="@(() => registrationModel.Email)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" disabled="@isSubmitting">@(isSubmitting ? "Registering..." : "Register")</button>
+</EditForm>
+
+@if (isSubmitted)
+{
+    <div class="alert alert-success mt-3">
+        Registration successful! Welcome, @registrationModel.Name!
+    </div>
+}
+
+<div class="mt-4">
+    <NavLink href="/" class="btn btn-secondary me-2">Back to Home</NavLink>
+    <NavLink href="/events" class="btn btn-outline-primary">View Events</NavLink>
+</div>
+
+@code {
+    [Inject] private UserSessionService UserSession { get; set; } = default!;
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    private RegistrationModel registrationModel = new();
+    private bool isSubmitted = false;
+    private bool isSubmitting = false;
+
+    private async Task HandleValidSubmit()
+    {
+        isSubmitting = true;
+        await Task.Delay(100); // Simulate async operation
+        UserSession.RegisterUser(registrationModel.Name!, registrationModel.Email!);
+        isSubmitted = true;
+        isSubmitting = false;
+        Navigation.NavigateTo("/events");
+    }
+}

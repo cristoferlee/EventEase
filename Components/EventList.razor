@@ -1,0 +1,35 @@
+@using eventease.Store
+
+<div class="mb-3">
+    <input type="text" class="form-control" @bind="searchTerm" placeholder="Search Events" />
+</div>
+
+@if (!string.IsNullOrEmpty(searchTerm))
+{
+    <div class="alert alert-info">Searching for: @searchTerm</div>
+}
+
+<div class="mt-3">
+    <Virtualize Items="filteredEvents.ToList()" Context="evt">
+        <div class="card mb-3" @key="evt.Id">
+            <div class="card-body">
+                <h5 class="card-title">@evt.Name</h5>
+                <p class="card-text">@evt.Date.ToShortDateString() - @evt.Location</p>
+            </div>
+            <div class="card-body">
+                <a href="@($"/event/{evt.Id}")" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </Virtualize>
+</div>
+
+@code {
+    [Parameter] public List<EventModel> Events { get; set; } = new();
+    private string searchTerm = string.Empty;
+
+    private IEnumerable<EventModel> filteredEvents =>
+        string.IsNullOrEmpty(searchTerm)
+            ? Events
+            : Events.Where(e => e.Name?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) == true ||
+                                e.Location?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) == true);
+}

@@ -1,0 +1,18 @@
+@page "/events"
+@using Fluxor
+@using eventease.Store
+@using eventease.Components
+
+<PageTitle>Events</PageTitle>
+
+<h1>All Events</h1>
+
+<EventList Events="EventsState.Value.Events" />
+
+<div class="mt-4">
+    <NavLink href="/register" class="btn btn-primary">Register for Events</NavLink>
+</div>
+
+@code {
+    [Inject] public IState<EventState> EventsState { get; set; } = default!;
+}
