@@ -33,3 +33,13 @@ Copilot helped implement a Registration Form with validation, user session state
 - .NET
 - Microsoft Copilot
 - GitHub
+
+## Copilot Usage Summary
+
+Microsoft Copilot was used throughout the development process:
+
+- Activity 1: Generated the foundational Event Card component with data binding and helped structure the app.
+- Activity 2: Identified and fixed issues related to validation, routing, and performance, including improvements with @key and better routing handling.
+- Activity 3: Assisted in implementing advanced features such as a Registration Form with validation, state management using a session service, and an Attendance Tracker.
+
+Copilot acted as a pair programming assistant, helping improve code quality, debugging, and overall development efficiency.
